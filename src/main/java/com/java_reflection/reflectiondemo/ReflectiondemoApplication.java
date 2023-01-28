@@ -197,6 +197,8 @@ public class ReflectiondemoApplication {
         int isCatClassPublic = classAccessModifier & Modifier.PUBLIC;
         // if cat class public below line will print 1 otherwise it will print 0
         System.out.println(isCatClassPublic);
+        // we have inbuilt method for do same thing
+        System.out.println(Modifier.isPublic(classAccessModifier));
 
         try {
             // check method access modifier type
