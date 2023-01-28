@@ -98,6 +98,8 @@ public class ApplicationContext {
 
                 if (files != null) {
                     for (File file : files) {
+                        // here we have issue we need to change value here
+                        // otherwise app will trow exception
                         String name = value + "." + file.getName().replace(".class", "");
                         try {
                             Class<?> loadingClass = Class.forName(name);
