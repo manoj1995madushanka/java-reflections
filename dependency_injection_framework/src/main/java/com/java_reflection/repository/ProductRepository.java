@@ -1,9 +1,10 @@
 package com.java_reflection.repository;
 
+import com.java_reflection.annotation.AutoComponent;
 import com.java_reflection.pojo.Product;
 
 import java.util.List;
-
+@AutoComponent
 public class ProductRepository {
 
     public List<Product> getPrice(List<Product> items) {
