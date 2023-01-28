@@ -5,6 +5,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>annotation</module>
+        <module>annotationwithreflection</module>
     </modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>

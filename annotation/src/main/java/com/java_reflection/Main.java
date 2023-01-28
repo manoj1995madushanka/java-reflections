@@ -1,8 +1,8 @@
 package com.java_reflection;
 
-import com.java_reflection.customannotation.typeannotation.Java8TypeAnnotation;
-import com.java_reflection.customannotation.typeannotation.NonEmpty;
-import com.java_reflection.customannotation.typeannotation.ReadOnly;
+import com.java_reflection.java8_features.typeannotation.Java8TypeAnnotation;
+import com.java_reflection.java8_features.typeannotation.NonEmpty;
+import com.java_reflection.java8_features.typeannotation.ReadOnly;
 
 public class Main {
     public static void main(String[] args) {

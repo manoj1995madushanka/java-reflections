@@ -64,6 +64,8 @@ java 8 added two new features to annotations
     Type annotations
     Repeating annotations : from this we can add same annotation can use multiple types for same element
 
+for read the annotation we use reflection API
+
 
 
 

@@ -1,4 +1,4 @@
-package com.java_reflection.customannotation.repeatableannotation;
+package com.java_reflection.java8_features.repeatableannotation;
 
 import java.lang.annotation.*;
 

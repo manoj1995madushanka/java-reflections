@@ -1,4 +1,4 @@
-package com.java_reflection.customannotation.typeannotation;
+package com.java_reflection.java8_features.typeannotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

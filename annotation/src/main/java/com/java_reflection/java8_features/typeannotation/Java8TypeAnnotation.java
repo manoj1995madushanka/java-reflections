@@ -1,4 +1,4 @@
-package com.java_reflection.customannotation.typeannotation;
+package com.java_reflection.java8_features.typeannotation;
 
 public class Java8TypeAnnotation<@NonEmpty T> {
     @NonEmpty
