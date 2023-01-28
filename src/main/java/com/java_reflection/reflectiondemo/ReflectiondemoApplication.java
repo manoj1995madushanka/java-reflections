@@ -3,10 +3,7 @@ package com.java_reflection.reflectiondemo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.stream.Stream;
 
 @SpringBootApplication
@@ -171,7 +168,7 @@ public class ReflectiondemoApplication {
                 privateCat.setAccessible(true);
                 // create cat instance using private constructor
                 Cat defaultCatInstance = (Cat) privateCat.newInstance();
-                System.out.println("name : " + defaultCatInstance.getName() +", age : "+ defaultCatInstance.getAge());
+                System.out.println("name : " + defaultCatInstance.getName() + ", age : " + defaultCatInstance.getAge());
 
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException(e);
@@ -184,6 +181,30 @@ public class ReflectiondemoApplication {
             }
 
         } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * modifier usage check
+     */
+    private static void modifierCheck() {
+        Cat cat = new Cat("Tom", 2);
+        Class<?> catClass = cat.getClass();
+
+        // check cat class is public or not
+        int classAccessModifier = catClass.getModifiers();
+        int isCatClassPublic = classAccessModifier & Modifier.PUBLIC;
+        // if cat class public below line will print 1 otherwise it will print 0
+        System.out.println(isCatClassPublic);
+
+        try {
+            // check method access modifier type
+            Method getAgeMethod = catClass.getMethod("getAge");
+            int getAgeAccessModifier = getAgeMethod.getModifiers();
+            int isGetAgePublic = getAgeAccessModifier & Modifier.PUBLIC;
+            System.out.println(isGetAgePublic);
+        } catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

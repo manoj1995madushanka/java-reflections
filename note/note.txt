@@ -1,2 +1,5 @@
 metadata : description of classes and object within JVM
 
+java.lang.Modifier
+provides methods and constants to decode class and member access modifier
+this can be a use for identify access modifier type
