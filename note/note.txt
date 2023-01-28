@@ -66,6 +66,10 @@ java 8 added two new features to annotations
 
 for read the annotation we use reflection API
 
+Dependency Injection
+    dependency injection is using a framework to inject dependency resources where they are needed rather than
+constructing the resources at places
+
 
 
 
