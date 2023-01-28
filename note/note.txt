@@ -60,6 +60,10 @@ how to generate javadoc class?
     then browser will redirect to url
 
 
+java 8 added two new features to annotations
+    Type annotations
+    Repeating annotations : from this we can add same annotation can use multiple types for same element
+
 
 
 
