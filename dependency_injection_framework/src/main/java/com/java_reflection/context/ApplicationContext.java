@@ -11,12 +11,17 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * this is kind of container
  * we store data in a hashmap
  */
+@AutoComponent
 public class ApplicationContext {
 
     /**
@@ -59,7 +64,7 @@ public class ApplicationContext {
                     // we need to inject them also
                     // so we need to use recursive approach here
                     Field[] innerDeclaredFields = type.getDeclaredFields();
-                    injectBean(innerObj,innerDeclaredFields);
+                    injectBean(innerObj, innerDeclaredFields);
 
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
@@ -84,45 +89,68 @@ public class ApplicationContext {
                 AutoComponentScan annotation = classObj.getAnnotation(AutoComponentScan.class);
                 String value = annotation.value();
 
-                String packageStructure = "bin/" + value.replace(".", "/");
+                // this list contain our compiled java class locations
+                List<String> packageList = getPackageList(value);
+                List<File> fileList = packageList.stream().map(packageName -> new File(packageName)).collect(Collectors.toList());
 
                 // lets find classes in package structure
-                File[] files = findClasses(new File(packageStructure));
+                List<File> files = findClasses(fileList);
 
-                for (File file : files) {
-                    String name = value + "." + file.getName().replace(".class", "");
-                    try {
-                        Class<?> loadingClass = Class.forName(name);
+                if (files != null) {
+                    for (File file : files) {
+                        String name = value + "." + file.getName().replace(".class", "");
+                        try {
+                            Class<?> loadingClass = Class.forName(name);
 
-                        // check loadingClass has @AutoComponent annotation
-                        if (loadingClass.isAnnotationPresent(AutoComponent.class)) {
-                            Constructor<?> constructor = loadingClass.getConstructor();
-                            Object instance = constructor.newInstance();
-                            map.put(loadingClass, instance);
+                            // check loadingClass has @AutoComponent annotation
+                            if (loadingClass.isAnnotationPresent(AutoComponent.class)) {
+                                Constructor<?> constructor = loadingClass.getConstructor();
+                                Object instance = constructor.newInstance();
+                                map.put(loadingClass, instance);
+                            }
+
+                        } catch (ClassNotFoundException e) {
+                            throw new RuntimeException(e);
+                        } catch (NoSuchMethodException e) {
+                            throw new RuntimeException(e);
+                        } catch (InvocationTargetException e) {
+                            throw new RuntimeException(e);
+                        } catch (InstantiationException e) {
+                            throw new RuntimeException(e);
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
                         }
-
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    } catch (NoSuchMethodException e) {
-                        throw new RuntimeException(e);
-                    } catch (InvocationTargetException e) {
-                        throw new RuntimeException(e);
-                    } catch (InstantiationException e) {
-                        throw new RuntimeException(e);
-                    } catch (IllegalAccessException e) {
-                        throw new RuntimeException(e);
                     }
                 }
             }
         }
 
-        private static File[] findClasses(File file) {
-            if (!file.exists()) {
-                throw new RuntimeException("Package " + file + " does not exist");
-            } else {
-                File[] files = file.listFiles(f -> f.getName().endsWith(".class"));
-                return files;
+        private static List<String> getPackageList(String value) {
+            return Stream.of(
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/"),
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/") + "/annotation",
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/") + "/config",
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/") + "/context",
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/") + "/pojo",
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/") + "/repository",
+                    "dependency_injection_framework/target/classes/" + value.replace(".", "/") + "/service"
+            ).collect(Collectors.toList());
+
+        }
+
+        private static  List<File> findClasses(List<File> files) {
+            List<File> classFiles = new ArrayList<>();
+            for (File file : files) {
+                if (!file.exists()) {
+                    throw new RuntimeException("Package " + file + " does not exist");
+                } else {
+                    File[] classFileArr = file.listFiles(f -> f.getName().endsWith(".class"));
+                   for (File f:classFileArr){
+                       classFiles.add(f);
+                   }
+                }
             }
+            return classFiles;
         }
     }
 }
