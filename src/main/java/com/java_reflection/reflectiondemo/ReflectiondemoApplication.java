@@ -4,7 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.stream.Stream;
 
 @SpringBootApplication
 public class ReflectiondemoApplication {
@@ -12,6 +14,7 @@ public class ReflectiondemoApplication {
     public static void main(String[] args) {
         invokeUsingReflection();
         exploreMethods();
+        fieldReflection();
     }
 
     private static void invokeUsingReflection() {
@@ -46,18 +49,18 @@ public class ReflectiondemoApplication {
             Class<?> class2 = Class.forName("java.lang.String");
 
             // checking memory location equality
-            System.out.println("memory location equality -> " +(class1 == class2));
+            System.out.println("memory location equality -> " + (class1 == class2));
             // checking content equality
             System.out.println("content equality -> " + class1.equals(class2));
 
             // get superclass
             Class<?> superClass = class1.getSuperclass();
-            System.out.println( "Superclasses : "+superClass.getName());
+            System.out.println("Superclasses : " + superClass.getName());
 
             // get interfaces
             System.out.println("Listing interfaces");
             Class<?>[] interfaces = class1.getInterfaces();
-            for (Class<?> intf : interfaces){
+            for (Class<?> intf : interfaces) {
                 System.out.println(intf.getName());
             }
 
@@ -66,6 +69,44 @@ public class ReflectiondemoApplication {
 
 
         } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    /**
+     * modify private fields using constructor
+     */
+    private static void fieldReflection() {
+        Cat cat = new Cat("Tom", 2);
+        // get class object
+        Class<?> catClass = cat.getClass();
+        // access only public fields of cat class
+        Field[] publicFields = catClass.getFields();
+        System.out.println("public fields => ");
+        Stream.of(publicFields).forEach(System.out::println);
+
+        // access public and private fields
+        Field[] publicPrivateFields = catClass.getDeclaredFields();
+        System.out.println("public and private fields => ");
+        Stream.of(publicPrivateFields).forEach(System.out::println);
+
+        try {
+            System.out.println("cat name before modify : "+cat.getName());
+            // modify private field value
+            // here we need to use declaredField because we are accessing private field
+            Field privateField = catClass.getDeclaredField("name");
+
+            // before we modify private field we need to make that accessible
+            privateField.setAccessible(true);
+
+            privateField.set(cat, "Jerrry");
+            System.out.println("cat name after modify : "+cat.getName());
+
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
     }
