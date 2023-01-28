@@ -147,5 +147,44 @@ public class ReflectiondemoApplication {
         }
     }
 
+    /**
+     * constructor reflection
+     */
+    private static void constructorReflection() {
+        try {
+            Class<?> catClass = Class.forName("com.java_reflection.reflectiondemo.Cat");
 
+            // get public constructors
+            Constructor<?>[] catConstructors = catClass.getConstructors();
+            System.out.println("public constructors : ");
+            Stream.of(catConstructors).forEach(System.out::println);
+
+            // get private and public constructors
+            Constructor<?>[] declaredConstructors = catClass.getDeclaredConstructors();
+            System.out.println("public and private constructors");
+            Stream.of(declaredConstructors).forEach(System.out::println);
+
+            try {
+                // get private constructor of Cat
+                Constructor<?> privateCat = catClass.getDeclaredConstructor();
+                // make that constructor accessible
+                privateCat.setAccessible(true);
+                // create cat instance using private constructor
+                Cat defaultCatInstance = (Cat) privateCat.newInstance();
+                System.out.println("name : " + defaultCatInstance.getName() +", age : "+ defaultCatInstance.getAge());
+
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            } catch (InstantiationException e) {
+                throw new RuntimeException(e);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

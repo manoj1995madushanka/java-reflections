@@ -9,6 +9,10 @@ public class Cat {
         this.age = age;
     }
 
+    private Cat() {
+        this("Percey", 1);
+    }
+
     public int getAge() {
         return age;
     }
@@ -17,11 +21,11 @@ public class Cat {
         return name;
     }
 
-    private void setName(String name){
+    private void setName(String name) {
         this.name = name;
     }
 
-    private void privateFeed(String food){
+    private void privateFeed(String food) {
         System.out.println("cat ate " + food);
     }
 
