@@ -17,4 +17,12 @@ public class Cat {
         return name;
     }
 
+    private void setName(String name){
+        this.name = name;
+    }
+
+    private void privateFeed(String food){
+        System.out.println("cat ate " + food);
+    }
+
 }

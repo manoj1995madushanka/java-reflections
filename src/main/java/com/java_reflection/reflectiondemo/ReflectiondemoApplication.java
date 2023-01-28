@@ -6,15 +6,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.stream.Stream;
 
 @SpringBootApplication
 public class ReflectiondemoApplication {
 
     public static void main(String[] args) {
-        invokeUsingReflection();
-        exploreMethods();
-        fieldReflection();
+        //invokeUsingReflection();
+        //exploreMethods();
+        //fieldReflection();
+        methodReflection();
     }
 
     private static void invokeUsingReflection() {
@@ -93,7 +95,7 @@ public class ReflectiondemoApplication {
         Stream.of(publicPrivateFields).forEach(System.out::println);
 
         try {
-            System.out.println("cat name before modify : "+cat.getName());
+            System.out.println("cat name before modify : " + cat.getName());
             // modify private field value
             // here we need to use declaredField because we are accessing private field
             Field privateField = catClass.getDeclaredField("name");
@@ -102,7 +104,7 @@ public class ReflectiondemoApplication {
             privateField.setAccessible(true);
 
             privateField.set(cat, "Jerrry");
-            System.out.println("cat name after modify : "+cat.getName());
+            System.out.println("cat name after modify : " + cat.getName());
 
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
@@ -110,4 +112,40 @@ public class ReflectiondemoApplication {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * method level reflection
+     */
+    private static void methodReflection() {
+        Cat cat = new Cat("Tom", 2);
+        Class<?> catClass = cat.getClass();
+
+        // access public methods of cat and it's super class
+        Method[] methods = catClass.getMethods();
+        System.out.println("public methods : ");
+        Stream.of(methods).forEach(System.out::println);
+
+        // access public and private methods of cat class
+        Method[] publicPrivateMethods = catClass.getDeclaredMethods();
+        System.out.println("public and private methods of cat class : ");
+        Stream.of(publicPrivateMethods).forEach(System.out::println);
+
+        try {
+            // access private method and change value
+            System.out.println("cate name before modify : " + cat.getName());
+            Method setNameMethod = catClass.getDeclaredMethod("setName", String.class);
+            setNameMethod.setAccessible(true);
+            setNameMethod.invoke(cat, "Jerry");
+            System.out.println("cate name after modify : " + cat.getName());
+
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
