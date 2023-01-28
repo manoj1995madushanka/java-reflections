@@ -37,6 +37,23 @@ using javadoc tool that document will not include the annotation information. Bu
 then it enable to document process to inclue the annotation types information in the generated document
 along with other information.
 
+@Inherited
+    when we add this annotation to class A then after class B will extend class A
+class B automatically getting class A annotation
+
+@Target
+    this is used to define target entity to which the particular annotation can be used
+    eg: variables,methods,classes,packages
+
+@Retention
+    used to define how long the particular annotation should be retained
+    source retention will remove in compile time
+    class retention will remove by jvm. this is default
+    runtime retention policy exist when code execute by jvm
+
+reflection API is managing annotations
+reflection help us to get information about annotation members and values
+
 how to generate javadoc class?
     in terminal type javadoc classpath
     after execute open index.html
