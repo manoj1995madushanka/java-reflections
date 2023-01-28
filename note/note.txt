@@ -3,3 +3,37 @@ metadata : description of classes and object within JVM
 java.lang.Modifier
 provides methods and constants to decode class and member access modifier
 this can be a use for identify access modifier type
+
+why annotations
+    annotations define metadata about the program
+    introduced in java 5
+    can be used with class, method, variables etc.
+
+annotation declaration ->
+
+[access specifier] @interface <AnnotationName>{
+    <DataType> <MemberName>() [default value];
+}
+
+annotation utilization ->
+
+@<AnnotationName> (member = value)
+<Programming element>
+
+types of annotations
+    Marker Annotation - without any member : @Override
+    Single-Valued Annotation - with single member : @SuppressWarnings("Unchecked")
+    Multi-Valued Annotations - with more than one member
+
+
+
+
+
+
+
+
+
+
+
+
+
