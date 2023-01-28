@@ -25,6 +25,22 @@ types of annotations
     Single-Valued Annotation - with single member : @SuppressWarnings("Unchecked")
     Multi-Valued Annotations - with more than one member
 
+standard annotations
+    general purpose annotations : java.lang -> @Override,@Supresswarnings,@Depricated
+    meta annotations : java.lang.annotation -> @Documented,@Inherited,@Target,@Retention
+
+meta annotations are useful for create our own custom annotations
+
+@Documented
+    in java when we generate documentation for any class using javadoc tool or html file for any class
+using javadoc tool that document will not include the annotation information. But we added @Documented
+then it enable to document process to inclue the annotation types information in the generated document
+along with other information.
+
+how to generate javadoc class?
+    in terminal type javadoc classpath
+    after execute open index.html
+    then browser will redirect to url
 
 
 
